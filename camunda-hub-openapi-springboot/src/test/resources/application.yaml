@@ -6,5 +6,3 @@ camunda:
       base-url: https://hub.camunda.io/api/v2
       auth-url: https://login.cloud.camunda.io/oauth/token
       audience: api.cloud.camunda.io
-      auth-type: KEYCLOAK
-      identity-url: http://localhost:8084

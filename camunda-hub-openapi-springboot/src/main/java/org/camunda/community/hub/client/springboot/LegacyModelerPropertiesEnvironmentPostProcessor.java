@@ -30,9 +30,7 @@ public class LegacyModelerPropertiesEnvironmentPostProcessor implements Environm
           "auth-url",
           "audience",
           "client-id",
-          "client-secret",
-          "auth-type",
-          "identity-url");
+          "client-secret");
 
   private final Log log;
 

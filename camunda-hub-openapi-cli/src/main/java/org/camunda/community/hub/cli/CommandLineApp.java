@@ -1,22 +1,8 @@
 package org.camunda.community.hub.cli;
 
-import static org.camunda.community.hub.ApiClientConfiguration.*;
-
-import io.camunda.common.auth.Authentication;
-import io.camunda.common.auth.JwtConfig;
-import io.camunda.common.auth.JwtCredential;
-import io.camunda.common.auth.Product;
-import io.camunda.common.auth.SaaSAuthentication;
-import io.camunda.common.auth.SelfManagedAuthentication;
-import io.camunda.common.auth.identity.IdentityConfig;
-import io.camunda.common.auth.identity.IdentityContainer;
-import io.camunda.common.json.JsonMapper;
-import io.camunda.common.json.SdkObjectMapper;
-import io.camunda.identity.sdk.Identity;
-import io.camunda.identity.sdk.IdentityConfiguration;
-import io.camunda.identity.sdk.IdentityConfiguration.Type;
 import org.camunda.community.hub.ApiClientConfiguration;
 import org.camunda.community.hub.ApiClientFactory;
+import org.camunda.community.hub.ClientCredentialsTokenProvider;
 import org.camunda.community.hub.HubAuthInterceptor;
 import org.camunda.community.hub.client.api.*;
 import org.camunda.community.hub.client.invoker.ApiClient;
@@ -48,7 +34,7 @@ public class CommandLineApp {
 
   @Option(
       names = {"--authUrl"},
-      description = "auth url of API (default to Camunda Saas auth url)",
+      description = "token endpoint or OIDC issuer URL (default to Camunda SaaS token url)",
       scope = CommandLine.ScopeType.INHERIT,
       defaultValue =
           "${CAMUNDA_HUB_CLIENT_AUTHURL:-${CAMUNDA_MODELER_CLIENT_AUTHURL:-https://login.cloud.camunda.io/oauth/token}}",
@@ -79,85 +65,15 @@ public class CommandLineApp {
       required = true)
   String clientSecret;
 
-  @Option(
-      names = {"--authType"},
-      description = "auth type, only required for self-managed (default to KEYCLOAK)",
-      scope = CommandLine.ScopeType.INHERIT,
-      defaultValue = "${CAMUNDA_HUB_CLIENT_AUTHTYPE:-${CAMUNDA_MODELER_CLIENT_AUTHTYPE:-KEYCLOAK}}",
-      required = true)
-  Type authType;
-
   public static void main(String[] args) {
     new CommandLine(new CommandLineApp()).execute(args);
   }
 
-  private JsonMapper jsonMapper() {
-    return new SdkObjectMapper();
-  }
-
-  private JwtCredential hubCredential() {
-    return new JwtCredential(clientId, clientSecret, audience, authUrl);
-  }
-
-  private JwtConfig jwtConfig(JwtCredential hubCredential) {
-    JwtConfig jwtConfig = new JwtConfig();
-    jwtConfig.addProduct(Product.WEB_MODELER, hubCredential);
-    return jwtConfig;
-  }
-
-  private IdentityConfiguration identityConfiguration() {
-    return new IdentityConfiguration(
-        baseUrl, authUrl, authUrl, clientId, clientSecret, audience, authType.name());
-  }
-
-  private Identity identity(IdentityConfiguration identityConfiguration) {
-    return new Identity(identityConfiguration);
-  }
-
-  private IdentityContainer identityContainer(
-      Identity identity, IdentityConfiguration identityConfiguration) {
-    return new IdentityContainer(identity, identityConfiguration);
-  }
-
-  private IdentityConfig identityConfig(IdentityContainer identityContainer) {
-    IdentityConfig identityConfig = new IdentityConfig();
-    identityConfig.addProduct(Product.WEB_MODELER, identityContainer);
-    return identityConfig;
-  }
-
-  private Authentication authentication(
-      JsonMapper jsonMapper, JwtConfig jwtConfig, IdentityConfig identityConfig) {
-    if (isSaas()) {
-      return SaaSAuthentication.builder()
-          .withJsonMapper(jsonMapper)
-          .withJwtConfig(jwtConfig)
-          .build();
-    } else {
-      return SelfManagedAuthentication.builder()
-          .withJwtConfig(jwtConfig)
-          .withIdentityConfig(identityConfig)
-          .build();
-    }
-  }
-
-  private boolean isSaas() {
-    return authUrl.equals(SAAS_AUTH_URL);
-  }
-
   private ApiClient buildApiClient() {
-    JsonMapper jsonMapper = jsonMapper();
-    JwtCredential hubCredential = hubCredential();
-    JwtConfig jwtConfig = jwtConfig(hubCredential);
-    IdentityConfiguration identityConfiguration = identityConfiguration();
-    Identity identity = identity(identityConfiguration);
-    IdentityContainer identityContainer = identityContainer(identity, identityConfiguration);
-    IdentityConfig identityConfig = identityConfig(identityContainer);
+    ClientCredentialsTokenProvider tokenProvider =
+        new ClientCredentialsTokenProvider(authUrl, clientId, clientSecret, audience);
     return ApiClientFactory.getInstance()
-        .get(
-            new ApiClientConfiguration(
-                baseUrl,
-                new HubAuthInterceptor(
-                    authentication(jsonMapper, jwtConfig, identityConfig))));
+        .get(new ApiClientConfiguration(baseUrl, new HubAuthInterceptor(tokenProvider)));
   }
 
   protected FileApi buildFileClient() {

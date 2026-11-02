@@ -12,20 +12,18 @@ All base parameters can be populated from the command line as well:
 * `CAMUNDA_HUB_CLIENT_AUDIENCE` -> `--audience`
 * `CAMUNDA_HUB_CLIENT_CLIENTID` -> `--clientId`
 * `CAMUNDA_HUB_CLIENT_CLIENTSECRET` -> `--clientSecret`
-* `CAMUNDA_HUB_CLIENT_AUTHTYPE` -> `--authType`
 
 ## Usage
 
 ```
-Usage: <main class> [-hV] [--audience=<audience>] [--authType=<authType>]
+Usage: <main class> [-hV] [--audience=<audience>]
                     [--authUrl=<authUrl>] [-b=<baseUrl>]
                     [--clientId=<clientId>] [--clientSecret=<clientSecret>]
                     [-t=<token>] [COMMAND]
 Camunda Hub CLI
       --audience=<audience> audience of API (default to Camunda Saas audience)
-      --authType=<authType> auth type, only required for self-managed (default
-                              to KEYCLOAK)
-      --authUrl=<authUrl>   auth url of API (default to Camunda Saas auth url)
+      --authUrl=<authUrl>   token endpoint or OIDC issuer URL (default to Camunda
+                              SaaS token url)
   -b, --baseUrl, --basePath=<baseUrl>
                             base url of API (default to Camunda Hub SaaS
                               url)
@@ -51,16 +49,15 @@ Program will print out usage help for each subcommand.
 
 ```
 Usage: <main class> downloadProject [-hV] [--audience=<audience>]
-                                    [--authType=<authType>]
+                                   
                                     [--authUrl=<authUrl>] [-b=<baseUrl>]
                                     [--clientId=<clientId>]
                                     [--clientSecret=<clientSecret>] [-m=<mode>]
                                     [-o=<output>] -p=<projectKey> [-t=<token>]
 Downloads all files of the project.
       --audience=<audience> audience of API (default to Camunda Saas audience)
-      --authType=<authType> auth type, only required for self-managed (default
-                              to KEYCLOAK)
-      --authUrl=<authUrl>   auth url of API (default to Camunda Saas auth url)
+      --authUrl=<authUrl>   token endpoint or OIDC issuer URL (default to Camunda
+                              SaaS token url)
   -b, --baseUrl, --basePath=<baseUrl>
                             base url of API (default to Camunda Hub SaaS
                               url)
