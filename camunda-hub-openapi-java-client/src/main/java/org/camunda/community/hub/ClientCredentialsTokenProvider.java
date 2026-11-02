@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
  * <p>The {@code authUrl} is either the token endpoint itself (path ending in {@code /token}, as for
  * Camunda SaaS) or an OIDC issuer URL, in which case the token endpoint is looked up via {@code
  * /.well-known/openid-configuration}.
+ *
+ * <p>Requests time out (10s to connect, 30s per request) so that a stalled endpoint cannot block
+ * callers of {@link #getToken()} forever. A token response without {@code expires_in} is never
+ * cached, so the next call requests a new token.
  */
 public class ClientCredentialsTokenProvider {
 
@@ -94,6 +98,7 @@ public class ClientCredentialsTokenProvider {
     }
     HttpRequest request =
         HttpRequest.newBuilder(URI.create(resolveTokenEndpoint()))
+            .timeout(requestTimeout)
             .header("Content-Type", "application/x-www-form-urlencoded")
             .POST(HttpRequest.BodyPublishers.ofString(encode(form)))
             .build();
@@ -114,6 +119,7 @@ public class ClientCredentialsTokenProvider {
         HttpRequest request =
             HttpRequest.newBuilder(
                     URI.create(authUrl.replaceAll("/+$", "") + "/.well-known/openid-configuration"))
+                .timeout(requestTimeout)
                 .GET()
                 .build();
         JsonNode configuration = send(request, "Unable to discover token endpoint");

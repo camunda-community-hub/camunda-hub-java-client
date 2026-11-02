@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.notMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -92,10 +93,7 @@ class ClientCredentialsTokenProviderTest {
             Duration.ofSeconds(5))
         .getToken();
 
-    verify(
-        postRequestedFor(urlEqualTo(TOKEN_PATH))
-            .withRequestBody(
-                com.github.tomakehurst.wiremock.client.WireMock.notMatching(".*audience.*")));
+    verify(postRequestedFor(urlEqualTo(TOKEN_PATH)).withRequestBody(notMatching(".*audience.*")));
   }
 
   @Test
@@ -280,6 +278,25 @@ class ClientCredentialsTokenProviderTest {
     } finally {
       Thread.interrupted();
     }
+  }
+
+  @Test
+  void shouldTimeOutWhenTokenEndpointStalls() {
+    stubFor(
+        post(urlEqualTo(TOKEN_PATH))
+            .willReturn(aResponse().withFixedDelay(5_000).withBody("{\"access_token\":\"late\"}")));
+    ClientCredentialsTokenProvider provider =
+        new ClientCredentialsTokenProvider(
+            baseUrl + TOKEN_PATH,
+            "id",
+            "secret",
+            null,
+            Clock.systemUTC(),
+            Duration.ofSeconds(1),
+            Duration.ofMillis(300));
+
+    assertTimeoutPreemptively(
+        Duration.ofSeconds(3), () -> assertThrows(IllegalStateException.class, provider::getToken));
   }
 
   private void stubDiscovery(String issuerPath) {
