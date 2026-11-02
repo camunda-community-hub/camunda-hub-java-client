@@ -47,6 +47,7 @@
     <plugin.version.frontend-maven-plugin>1.15.4</plugin.version.frontend-maven-plugin>
     <plugin.version.maven-source-plugin>3.4.0</plugin.version.maven-source-plugin>
     <plugin.version.openapi-generator-maven-plugin>7.25.0</plugin.version.openapi-generator-maven-plugin>
+    <plugin.version.jacoco-maven-plugin>0.8.15</plugin.version.jacoco-maven-plugin>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -188,6 +189,34 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${plugin.version.jacoco-maven-plugin}</version>
+          <configuration>
+            <!-- generated OpenAPI client: only the hand-written code is measured -->
+            <excludes>
+              <exclude>org/camunda/community/hub/client/api/**</exclude>
+              <exclude>org/camunda/community/hub/client/dto/**</exclude>
+              <exclude>org/camunda/community/hub/client/invoker/**</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <id>jacoco-prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>jacoco-report</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>${plugin.version.maven-enforcer-plugin}</version>
@@ -279,6 +308,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

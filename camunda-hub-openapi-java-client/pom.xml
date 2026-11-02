@@ -47,6 +47,17 @@
       <artifactId>jakarta.annotation-api</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -63,6 +74,8 @@
             <configuration>
               <inputSpec>${project.basedir}/openapi.json</inputSpec>
               <generatorName>java</generatorName>
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
               <configOptions>
                 <packageName>org.camunda.community.hub.client</packageName>
                 <apiPackage>org.camunda.community.hub.client.api</apiPackage>
