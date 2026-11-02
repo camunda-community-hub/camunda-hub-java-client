@@ -5,6 +5,7 @@ import static org.camunda.community.hub.download.Downloader.Mode.SIMPLE_PATH;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,9 +76,22 @@ public class Downloader {
     };
   }
 
+  /**
+   * Writes the file below the output folder. The file name originates from the server, so a name
+   * that resolves outside of the folder (for example {@code ../../x} or an absolute path) is
+   * rejected before anything is written.
+   *
+   * @throws IllegalArgumentException if the file would be written outside of the output folder
+   */
   private void writeFile(String content, String fileName) {
+    Path root = folder.toPath().toAbsolutePath().normalize();
+    Path target = root.resolve(fileName).normalize();
+    if (!target.startsWith(root)) {
+      throw new IllegalArgumentException(
+          "Refusing to write '" + fileName + "': it resolves outside of the output folder");
+    }
     System.out.println("Writing: " + fileName);
-    File outputFile = new File(folder, fileName);
+    File outputFile = target.toFile();
 
     try {
       FileUtils.write(outputFile, content);
