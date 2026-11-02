@@ -1,0 +1,3 @@
+ignored:
+  # TODO: remove once the Dockerfile is reworked in #294
+  - DL3020
