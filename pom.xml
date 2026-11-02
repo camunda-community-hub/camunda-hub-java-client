@@ -47,7 +47,7 @@
     <plugin.version.frontend-maven-plugin>2.0.2</plugin.version.frontend-maven-plugin>
     <plugin.version.maven-source-plugin>3.4.0</plugin.version.maven-source-plugin>
     <plugin.version.openapi-generator-maven-plugin>7.25.0</plugin.version.openapi-generator-maven-plugin>
-    <plugin.version.jacoco-maven-plugin>0.8.15</plugin.version.jacoco-maven-plugin>
+    <plugin.version.jacoco-maven-plugin>0.8.16</plugin.version.jacoco-maven-plugin>
   </properties>
   <dependencyManagement>
     <dependencies>
