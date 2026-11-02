@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.camunda.community.hub.client.springboot.LegacyModelerPropertiesEnvironmentPostProcessor

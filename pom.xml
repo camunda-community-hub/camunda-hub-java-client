@@ -7,8 +7,8 @@
     <version>1.4.4</version>
   </parent>
 
-  <groupId>org.camunda.community.webmodeler</groupId>
-  <artifactId>web-modeler-openapi-root</artifactId>
+  <groupId>org.camunda.community.hub</groupId>
+  <artifactId>camunda-hub-openapi-root</artifactId>
   <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -82,8 +82,8 @@
         <version>2.3.0</version>
       </dependency>
       <dependency>
-        <groupId>org.camunda.community.webmodeler</groupId>
-        <artifactId>web-modeler-openapi-java-client</artifactId>
+        <groupId>org.camunda.community.hub</groupId>
+        <artifactId>camunda-hub-openapi-java-client</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -346,9 +346,9 @@
     </profile>
   </profiles>
   <modules>
-    <module>web-modeler-openapi-java-client</module>
-    <module>web-modeler-openapi-springboot</module>
-    <module>web-modeler-openapi-cli</module>
+    <module>camunda-hub-openapi-java-client</module>
+    <module>camunda-hub-openapi-springboot</module>
+    <module>camunda-hub-openapi-cli</module>
   </modules>
 
 </project>

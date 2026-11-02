@@ -1,5 +1,5 @@
-# web-modeler-java-client
-Java Client for the Web Modeler (based on its OpenAPI spec from https://docs.camunda.io/docs/next/apis-tools/web-modeler-api/)
+# camunda-hub-java-client
+Java Client for the Camunda Hub (based on its OpenAPI spec, see the [SaaS](https://docs.camunda.io/docs/apis-tools/hub-api-saas/overview/) and [Self-Managed](https://docs.camunda.io/docs/apis-tools/hub-api-sm/overview/) API docs)
 
 ## How to use
 
@@ -9,8 +9,8 @@ Add dependency to Maven `pom.xml`:
 
 ```xml
   <dependency>
-    <groupId>org.camunda.community.webmodeler</groupId>
-    <artifactId>web-modeler-openapi-springboot</artifactId>
+    <groupId>org.camunda.community.hub</groupId>
+    <artifactId>camunda-hub-openapi-springboot</artifactId>
     <version>1.0.0</version>
   </dependency>
 ```
@@ -19,7 +19,7 @@ Add `application.yaml`:
 
 ```yaml
 camunda:
-  modeler:
+  hub:
     client:
       base-url: https://modeler.cloud.camunda.io
       auth-url: https://login.cloud.camunda.io/oauth/token
@@ -34,10 +34,14 @@ Now you can just inject the API:
 
 ```java
     @Autowired
-    private CamundaWebModelerApi camundaWebModelerApi;
+    private CamundaHubApi camundaHubApi;
 
     public void printProjects() {
         System.out.println(
-                camundaWebModelerApi.projectsApi().listProjects());
+                camundaHubApi.projectsApi().listProjects());
     }
 ```
+
+### Migrating from `camunda.modeler.client.*`
+
+The former `camunda.modeler.client.*` properties (and `CAMUNDA_MODELER_CLIENT_*` environment variables) are still read and mapped to `camunda.hub.client.*`, but are deprecated. A value set under `camunda.hub.client.*` takes precedence.
