@@ -1,0 +1,7 @@
+# Stands in for the application.yaml of an application using the starter.
+# It deliberately sets no defaults, they must come from the starter's code.
+camunda:
+  hub:
+    client:
+      client-id: yaml-id
+      client-secret: yaml-secret
