@@ -20,15 +20,48 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.22.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<ignoredUnusedDeclaredDependencies>
+						<!-- aggregator: provides spring-boot-autoconfigure at runtime for the AutoConfiguration.imports entry -->
+						<ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter</ignoredUnusedDeclaredDependency>
+					</ignoredUnusedDeclaredDependencies>
+					<ignoredUsedUndeclaredDependencies>
+						<!-- only referenced from test sources, supplied transitively by spring-boot-starter -->
+						<ignoredUsedUndeclaredDependency>org.springframework.boot:spring-boot-autoconfigure</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>jakarta.annotation:jakarta.annotation-api</ignoredUsedUndeclaredDependency>
+					</ignoredUsedUndeclaredDependencies>
+					<ignoredNonTestScopedDependencies>
+						<ignoredNonTestScopedDependency>org.springframework.boot:spring-boot-autoconfigure</ignoredNonTestScopedDependency>
+						<ignoredNonTestScopedDependency>jakarta.annotation:jakarta.annotation-api</ignoredNonTestScopedDependency>
+					</ignoredNonTestScopedDependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
