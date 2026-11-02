@@ -73,7 +73,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/openapi/camunda-openapi.yaml</inputSpec>
+              <inputSpec>${project.basedir}/openapi.json</inputSpec>
               <generatorName>java</generatorName>
               <configOptions>
                 <packageName>org.camunda.community.hub.client</packageName>

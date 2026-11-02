@@ -1,6 +1,7 @@
 package org.camunda.community.hub.client.springboot;
 
 import org.camunda.community.hub.client.api.CatalogApi;
+import org.camunda.community.hub.client.api.ClusterApi;
 import org.camunda.community.hub.client.api.EnvironmentApi;
 import org.camunda.community.hub.client.api.FileApi;
 import org.camunda.community.hub.client.api.FolderApi;
@@ -26,6 +27,11 @@ public class CamundaHubApi {
   @Bean
   public CatalogApi catalogApi() {
     return new CatalogApi(apiClient);
+  }
+
+  @Bean
+  public ClusterApi clusterApi() {
+    return new ClusterApi(apiClient);
   }
 
   @Bean
