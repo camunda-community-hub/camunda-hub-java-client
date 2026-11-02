@@ -13,8 +13,11 @@ import org.camunda.community.hub.client.api.VersionApi;
 import org.camunda.community.hub.client.api.WorkspaceApi;
 import org.camunda.community.hub.client.invoker.ApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 
+/**
+ * Entry point to all Camunda Hub APIs sharing one authenticated {@link ApiClient}. The same API
+ * objects are also registered as individual beans by {@link CamundaHubClientStarter}.
+ */
 public class CamundaHubApi {
 
   private final ApiClient apiClient;
@@ -24,57 +27,46 @@ public class CamundaHubApi {
     this.apiClient = apiClient;
   }
 
-  @Bean
   public CatalogApi catalogApi() {
     return new CatalogApi(apiClient);
   }
 
-  @Bean
   public ClusterApi clusterApi() {
     return new ClusterApi(apiClient);
   }
 
-  @Bean
   public EnvironmentApi environmentApi() {
     return new EnvironmentApi(apiClient);
   }
 
-  @Bean
   public FileApi fileApi() {
     return new FileApi(apiClient);
   }
 
-  @Bean
   public FolderApi folderApi() {
     return new FolderApi(apiClient);
   }
 
-  @Bean
   public InfoApi infoApi() {
     return new InfoApi(apiClient);
   }
 
-  @Bean
   public MemberApi memberApi() {
     return new MemberApi(apiClient);
   }
 
-  @Bean
   public ProjectApi projectApi() {
     return new ProjectApi(apiClient);
   }
 
-  @Bean
   public ProjectSnapshotApi projectSnapshotApi() {
     return new ProjectSnapshotApi(apiClient);
   }
 
-  @Bean
   public VersionApi versionApi() {
     return new VersionApi(apiClient);
   }
 
-  @Bean
   public WorkspaceApi workspaceApi() {
     return new WorkspaceApi(apiClient);
   }

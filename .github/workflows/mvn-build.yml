@@ -42,3 +42,10 @@ jobs:
       if: always()
       with:
         files: '**/target/surefire-reports/*.xml'
+    - name: Upload JaCoCo reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: jacoco-reports
+        path: '**/target/site/jacoco/'
+        if-no-files-found: ignore

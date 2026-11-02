@@ -39,6 +39,17 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -50,11 +61,19 @@
 					<ignoredUnusedDeclaredDependencies>
 						<!-- aggregator: provides spring-boot-autoconfigure at runtime for the AutoConfiguration.imports entry -->
 						<ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter</ignoredUnusedDeclaredDependency>
+						<!-- aggregator: supplies JUnit, AssertJ, Mockito and spring-test for the tests -->
+						<ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-test</ignoredUnusedDeclaredDependency>
 					</ignoredUnusedDeclaredDependencies>
 					<ignoredUsedUndeclaredDependencies>
 						<!-- only referenced from test sources, supplied transitively by spring-boot-starter -->
 						<ignoredUsedUndeclaredDependency>org.springframework.boot:spring-boot-autoconfigure</ignoredUsedUndeclaredDependency>
 						<ignoredUsedUndeclaredDependency>jakarta.annotation:jakarta.annotation-api</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.junit.jupiter:junit-jupiter-api</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.junit.jupiter:junit-jupiter-params</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.assertj:assertj-core</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.mockito:mockito-core</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.springframework:spring-test</ignoredUsedUndeclaredDependency>
+						<ignoredUsedUndeclaredDependency>org.springframework.boot:spring-boot-test</ignoredUsedUndeclaredDependency>
 					</ignoredUsedUndeclaredDependencies>
 					<ignoredNonTestScopedDependencies>
 						<ignoredNonTestScopedDependency>org.springframework.boot:spring-boot-autoconfigure</ignoredNonTestScopedDependency>

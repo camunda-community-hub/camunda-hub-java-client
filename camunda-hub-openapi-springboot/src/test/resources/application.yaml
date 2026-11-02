@@ -1,8 +1,7 @@
+# Stands in for the application.yaml of an application using the starter.
+# It deliberately sets no defaults, they must come from the starter's code.
 camunda:
   hub:
     client:
-      client-id: x
-      client-secret: y
-      base-url: https://hub.camunda.io/api/v2
-      auth-url: https://login.cloud.camunda.io/oauth/token
-      audience: api.cloud.camunda.io
+      client-id: yaml-id
+      client-secret: yaml-secret

@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -21,14 +22,22 @@ import java.util.stream.Collectors;
  * <p>The {@code authUrl} is either the token endpoint itself (path ending in {@code /token}, as for
  * Camunda SaaS) or an OIDC issuer URL, in which case the token endpoint is looked up via {@code
  * /.well-known/openid-configuration}.
+ *
+ * <p>Requests time out (10s to connect, 30s per request) so that a stalled endpoint cannot block
+ * callers of {@link #getToken()} forever. A token response without {@code expires_in} is never
+ * cached, so the next call requests a new token.
  */
 public class ClientCredentialsTokenProvider {
 
   private static final Duration EXPIRY_MARGIN = Duration.ofSeconds(30);
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  private final HttpClient httpClient =
-      HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+  private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+  private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
+
+  private final HttpClient httpClient;
+  private final Clock clock;
+  private final Duration requestTimeout;
   private final String authUrl;
   private final String clientId;
   private final String clientSecret;
@@ -40,6 +49,31 @@ public class ClientCredentialsTokenProvider {
 
   public ClientCredentialsTokenProvider(
       String authUrl, String clientId, String clientSecret, String audience) {
+    this(
+        authUrl,
+        clientId,
+        clientSecret,
+        audience,
+        Clock.systemUTC(),
+        DEFAULT_CONNECT_TIMEOUT,
+        DEFAULT_REQUEST_TIMEOUT);
+  }
+
+  ClientCredentialsTokenProvider(
+      String authUrl,
+      String clientId,
+      String clientSecret,
+      String audience,
+      Clock clock,
+      Duration connectTimeout,
+      Duration requestTimeout) {
+    this.clock = clock;
+    this.requestTimeout = requestTimeout;
+    this.httpClient =
+        HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(connectTimeout)
+            .build();
     this.authUrl = authUrl;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
@@ -48,7 +82,7 @@ public class ClientCredentialsTokenProvider {
 
   /** Returns a valid access token, requesting a new one if the cached token is about to expire. */
   public synchronized String getToken() {
-    if (token == null || Instant.now().isAfter(expiresAt.minus(EXPIRY_MARGIN))) {
+    if (token == null || clock.instant().isAfter(expiresAt.minus(EXPIRY_MARGIN))) {
       requestToken();
     }
     return token;
@@ -64,6 +98,7 @@ public class ClientCredentialsTokenProvider {
     }
     HttpRequest request =
         HttpRequest.newBuilder(URI.create(resolveTokenEndpoint()))
+            .timeout(requestTimeout)
             .header("Content-Type", "application/x-www-form-urlencoded")
             .POST(HttpRequest.BodyPublishers.ofString(encode(form)))
             .build();
@@ -73,7 +108,7 @@ public class ClientCredentialsTokenProvider {
       throw new IllegalStateException("Unable to authenticate: no access_token in response");
     }
     token = accessToken.asText();
-    expiresAt = Instant.now().plusSeconds(response.path("expires_in").asLong(0));
+    expiresAt = clock.instant().plusSeconds(response.path("expires_in").asLong(0));
   }
 
   private String resolveTokenEndpoint() {
@@ -84,6 +119,7 @@ public class ClientCredentialsTokenProvider {
         HttpRequest request =
             HttpRequest.newBuilder(
                     URI.create(authUrl.replaceAll("/+$", "") + "/.well-known/openid-configuration"))
+                .timeout(requestTimeout)
                 .GET()
                 .build();
         JsonNode configuration = send(request, "Unable to discover token endpoint");
