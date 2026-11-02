@@ -1,0 +1,60 @@
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        # vendored spec, must stay byte-identical to what the Camunda Hub API serves
+        exclude: ^camunda-hub-openapi-java-client/openapi\.json$
+      - id: end-of-file-fixer
+        exclude: ^camunda-hub-openapi-java-client/openapi\.json$
+      - id: mixed-line-ending
+        exclude: ^camunda-hub-openapi-java-client/openapi\.json$
+      - id: check-yaml
+      - id: check-xml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+        # vendored spec, large by nature
+        exclude: ^camunda-hub-openapi-java-client/openapi\.json$
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.5.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      # docker image from Docker Hub (the upstream hadolint-docker hook pulls from ghcr.io)
+      - id: hadolint
+        name: hadolint
+        language: docker_image
+        files: (^|/)Dockerfile$
+        entry: hadolint/hadolint:v2.15.1 hadolint
+      - id: spotless-staged
+        name: spotless apply (staged files)
+        language: system
+        files: \.(java|xml|md)$
+        # format only the files being committed, not the whole repo
+        entry: >-
+          bash -c 'regex=$(printf "%s|" "$@" | sed "s/\./\\\\./g");
+          mvn -q -B spotless:apply "-DspotlessFiles=.*/(${regex%|})"' --
+      - id: maven-strict
+        name: mvn verify -Pstrict
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+        entry: mvn -q -B verify -Pstrict -DskipTests
