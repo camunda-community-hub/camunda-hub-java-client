@@ -1,0 +1,6 @@
+camunda:
+  hub:
+    client:
+      base-url: https://hub.camunda.io/api/v2
+      auth-url: https://login.cloud.camunda.io/oauth/token
+      audience: api.cloud.camunda.io

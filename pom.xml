@@ -7,8 +7,8 @@
     <version>1.4.4</version>
   </parent>
 
-  <groupId>org.camunda.community.webmodeler</groupId>
-  <artifactId>web-modeler-openapi-root</artifactId>
+  <groupId>org.camunda.community.hub</groupId>
+  <artifactId>camunda-hub-openapi-root</artifactId>
   <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -22,11 +22,12 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <version.java>17</version.java>
+    <version.java>21</version.java>
     <maven.compiler.source>${version.java}</maven.compiler.source>
     <maven.compiler.target>${version.java}</maven.compiler.target>
 
-    <version.spring-boot>3.5.16</version.spring-boot>
+    <version.spring-boot>4.1.2</version.spring-boot>
+    <version.google-java-format>1.28.0</version.google-java-format>
     <version.picocli>4.7.7</version.picocli>
     <version.commons-io>2.22.0</version.commons-io>
 
@@ -57,11 +58,6 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>io.camunda.spring</groupId>
-        <artifactId>java-common</artifactId>
-        <version>8.5.6</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>3.0.2</version>
@@ -82,8 +78,8 @@
         <version>2.3.0</version>
       </dependency>
       <dependency>
-        <groupId>org.camunda.community.webmodeler</groupId>
-        <artifactId>web-modeler-openapi-java-client</artifactId>
+        <groupId>org.camunda.community.hub</groupId>
+        <artifactId>camunda-hub-openapi-java-client</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -231,7 +227,9 @@
               </format>
             </formats>
             <java>
-              <googleJavaFormat />
+              <googleJavaFormat>
+                <version>${version.google-java-format}</version>
+              </googleJavaFormat>
             </java>
             <pom />
           </configuration>
@@ -346,9 +344,9 @@
     </profile>
   </profiles>
   <modules>
-    <module>web-modeler-openapi-java-client</module>
-    <module>web-modeler-openapi-springboot</module>
-    <module>web-modeler-openapi-cli</module>
+    <module>camunda-hub-openapi-java-client</module>
+    <module>camunda-hub-openapi-springboot</module>
+    <module>camunda-hub-openapi-cli</module>
   </modules>
 
 </project>
