@@ -1,8 +1,9 @@
 package org.camunda.community.hub.cli;
 
-import java.util.UUID;
-import org.camunda.community.hub.client.dto.FileMetadataDto;
-import org.camunda.community.hub.client.dto.PubSearchDtoFileMetadataDto;
+import org.camunda.community.hub.client.dto.BasicStringFilterProperty;
+import org.camunda.community.hub.client.dto.FileFilter;
+import org.camunda.community.hub.client.dto.FileSearchQuery;
+import org.camunda.community.hub.client.dto.SearchQueryPage;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -13,10 +14,10 @@ public class ListFilesCommand extends AbstractCommand {
 
   @CommandLine.Option(
       names = {"--project", "-p"},
-      description = "project UUID",
+      description = "project key",
       scope = CommandLine.ScopeType.LOCAL,
       required = true)
-  UUID projectUUID;
+  String projectKey;
 
   @CommandLine.Option(
       names = {"--page", "-pg"},
@@ -26,11 +27,13 @@ public class ListFilesCommand extends AbstractCommand {
 
   @Override
   protected Object createResponse() throws Exception {
-    PubSearchDtoFileMetadataDto searchDto =
-        new PubSearchDtoFileMetadataDto()
-            .size(CommandLineApp.MAX_PAGE_SIZE)
-            .page(page)
-            .filter(new FileMetadataDto().projectId(projectUUID.toString()));
-    return parent.buildFilesClient().searchFiles(searchDto).getItems();
+    FileSearchQuery query =
+        new FileSearchQuery()
+            .page(
+                new SearchQueryPage()
+                    .limit(CommandLineApp.MAX_PAGE_SIZE)
+                    .from(page * CommandLineApp.MAX_PAGE_SIZE))
+            .filter(new FileFilter().projectKey(new BasicStringFilterProperty().$eq(projectKey)));
+    return parent.buildFileClient().searchFiles(query).getItems();
   }
 }

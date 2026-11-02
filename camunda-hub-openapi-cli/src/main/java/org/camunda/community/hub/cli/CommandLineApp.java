@@ -42,7 +42,7 @@ public class CommandLineApp {
       names = {"--basePath", "-b", "--baseUrl"},
       description = "base url of API (default to Camunda Hub SaaS url)",
       scope = CommandLine.ScopeType.INHERIT,
-      defaultValue = "${CAMUNDA_HUB_CLIENT_BASEURL:-${CAMUNDA_MODELER_CLIENT_BASEURL:-https://modeler.cloud.camunda.io}}",
+      defaultValue = "${CAMUNDA_HUB_CLIENT_BASEURL:-${CAMUNDA_MODELER_CLIENT_BASEURL:-https://hub.camunda.io/api/v2}}",
       required = true)
   String baseUrl;
 
@@ -160,27 +160,19 @@ public class CommandLineApp {
                     authentication(jsonMapper, jwtConfig, identityConfig))));
   }
 
-  protected CollaboratorsApi buildCollaboratorsClient() {
-    return new CollaboratorsApi(buildApiClient());
+  protected FileApi buildFileClient() {
+    return new FileApi(buildApiClient());
   }
 
-  protected FilesApi buildFilesClient() {
-    return new FilesApi(buildApiClient());
-  }
-
-  protected FoldersApi buildFoldersClient() {
-    return new FoldersApi(buildApiClient());
+  protected FolderApi buildFolderClient() {
+    return new FolderApi(buildApiClient());
   }
 
   protected InfoApi buildInfoClient() {
     return new InfoApi(buildApiClient());
   }
 
-  protected MilestonesApi buildMilestonesClient() {
-    return new MilestonesApi(buildApiClient());
-  }
-
-  protected ProjectsApi buildProjectsClient() {
-    return new ProjectsApi(buildApiClient());
+  protected ProjectApi buildProjectClient() {
+    return new ProjectApi(buildApiClient());
   }
 }

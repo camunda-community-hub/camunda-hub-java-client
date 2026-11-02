@@ -21,7 +21,7 @@ Add `application.yaml`:
 camunda:
   hub:
     client:
-      base-url: https://modeler.cloud.camunda.io
+      base-url: https://hub.camunda.io/api/v2
       auth-url: https://login.cloud.camunda.io/oauth/token
       audience: api.cloud.camunda.io
       auth-type: KEYCLOAK

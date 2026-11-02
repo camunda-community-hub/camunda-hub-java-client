@@ -1,11 +1,15 @@
 package org.camunda.community.hub.client.springboot;
 
-import org.camunda.community.hub.client.api.CollaboratorsApi;
-import org.camunda.community.hub.client.api.FilesApi;
-import org.camunda.community.hub.client.api.FoldersApi;
+import org.camunda.community.hub.client.api.CatalogApi;
+import org.camunda.community.hub.client.api.EnvironmentApi;
+import org.camunda.community.hub.client.api.FileApi;
+import org.camunda.community.hub.client.api.FolderApi;
 import org.camunda.community.hub.client.api.InfoApi;
-import org.camunda.community.hub.client.api.MilestonesApi;
-import org.camunda.community.hub.client.api.ProjectsApi;
+import org.camunda.community.hub.client.api.MemberApi;
+import org.camunda.community.hub.client.api.ProjectApi;
+import org.camunda.community.hub.client.api.ProjectSnapshotApi;
+import org.camunda.community.hub.client.api.VersionApi;
+import org.camunda.community.hub.client.api.WorkspaceApi;
 import org.camunda.community.hub.client.invoker.ApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,32 +24,52 @@ public class CamundaHubApi {
   }
 
   @Bean
-  public CollaboratorsApi collaboratorsApi() {
-    return new CollaboratorsApi(apiClient);
+  public CatalogApi catalogApi() {
+    return new CatalogApi(apiClient);
   }
 
   @Bean
-  public FilesApi filesApi() {
-    return new FilesApi(apiClient);
+  public EnvironmentApi environmentApi() {
+    return new EnvironmentApi(apiClient);
   }
 
   @Bean
-  public FoldersApi foldersApi() {
-    return new FoldersApi(apiClient);
+  public FileApi fileApi() {
+    return new FileApi(apiClient);
   }
 
   @Bean
-  public InfoApi conditionApi() {
-    return new InfoApi();
+  public FolderApi folderApi() {
+    return new FolderApi(apiClient);
   }
 
   @Bean
-  public MilestonesApi milestonesApi() {
-    return new MilestonesApi(apiClient);
+  public InfoApi infoApi() {
+    return new InfoApi(apiClient);
   }
 
   @Bean
-  public ProjectsApi projectsApi() {
-    return new ProjectsApi(apiClient);
+  public MemberApi memberApi() {
+    return new MemberApi(apiClient);
+  }
+
+  @Bean
+  public ProjectApi projectApi() {
+    return new ProjectApi(apiClient);
+  }
+
+  @Bean
+  public ProjectSnapshotApi projectSnapshotApi() {
+    return new ProjectSnapshotApi(apiClient);
+  }
+
+  @Bean
+  public VersionApi versionApi() {
+    return new VersionApi(apiClient);
+  }
+
+  @Bean
+  public WorkspaceApi workspaceApi() {
+    return new WorkspaceApi(apiClient);
   }
 }

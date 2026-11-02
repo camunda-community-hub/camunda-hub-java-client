@@ -1,7 +1,6 @@
 package org.camunda.community.hub.cli;
 
 import java.io.File;
-import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.camunda.community.hub.download.Downloader;
 import org.camunda.community.hub.download.Downloader.Mode;
@@ -15,10 +14,10 @@ public class DownloadProjectCommand extends AbstractCommand {
 
   @CommandLine.Option(
       names = {"--project", "-p"},
-      description = "project UUID",
+      description = "project key",
       scope = CommandLine.ScopeType.LOCAL,
       required = true)
-  UUID projectUUID;
+  String projectKey;
 
   @CommandLine.Option(
       names = {"--output", "-o"},
@@ -42,8 +41,8 @@ public class DownloadProjectCommand extends AbstractCommand {
       folder = new File(output);
       FileUtils.forceMkdir(folder);
     }
-    Downloader downloader = new Downloader(parent.buildFilesClient(), folder);
-    downloader.downloadProject(projectUUID, mode);
+    Downloader downloader = new Downloader(parent.buildFileClient(), folder);
+    downloader.downloadProject(projectKey, mode);
     return null;
   }
 }

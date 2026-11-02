@@ -55,7 +55,7 @@ Usage: <main class> downloadProject [-hV] [--audience=<audience>]
                                     [--authUrl=<authUrl>] [-b=<baseUrl>]
                                     [--clientId=<clientId>]
                                     [--clientSecret=<clientSecret>] [-m=<mode>]
-                                    [-o=<output>] -p=<projectUUID> [-t=<token>]
+                                    [-o=<output>] -p=<projectKey> [-t=<token>]
 Downloads all files of the project.
       --audience=<audience> audience of API (default to Camunda Saas audience)
       --authType=<authType> auth type, only required for self-managed (default
@@ -71,8 +71,8 @@ Downloads all files of the project.
   -m, --mode=<mode>         Overwrite mode for download. Valid values are:
                               SIMPLE_PATH, CANONICAL_PATH
   -o, --output=<output>     output folder
-  -p, --project=<projectUUID>
-                            project UUID
+  -p, --project=<projectKey>
+                            project key
   -t, --token=<token>       JWT token
   -V, --version             Print version information and exit.
 
@@ -83,8 +83,8 @@ Downloads all files of the project.
 * `SIMPLE_PATH` - Recommended if you have unique folder and file names in your project. It uses the simple path to
   create files. If a folder name is ambiguous, all folders with the same name get merged. If files are ambiguous, they
   overwrite each other and the last file wins
-* `CANONICAL_PATH` - Recommended if your folder and file names are not unique. It uses the canonical path. Each folder
-  and file name is suffixed by its unique ID (i.e. `<name>[<id>]`). This makes names unique, but also less pleasant to
+* `CANONICAL_PATH` - Recommended if your folder and file names are not unique. It uses the canonical path. Folders are
+  addressed by their unique IDs and file names are suffixed with the file key (`<name>[<key>]`). This makes names unique, but less pleasant to
   look at.
 
 ## Building from source

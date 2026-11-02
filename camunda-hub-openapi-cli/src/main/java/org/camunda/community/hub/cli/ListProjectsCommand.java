@@ -1,6 +1,7 @@
 package org.camunda.community.hub.cli;
 
-import org.camunda.community.hub.client.dto.PubSearchDtoProjectMetadataDto;
+import org.camunda.community.hub.client.dto.ProjectSearchQuery;
+import org.camunda.community.hub.client.dto.SearchQueryPage;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -17,8 +18,12 @@ public class ListProjectsCommand extends AbstractCommand {
 
   @Override
   protected Object createResponse() throws Exception {
-    PubSearchDtoProjectMetadataDto searchDto =
-        new PubSearchDtoProjectMetadataDto().size(CommandLineApp.MAX_PAGE_SIZE).page(page);
-    return parent.buildProjectsClient().searchProjects(searchDto).getItems();
+    ProjectSearchQuery query =
+        new ProjectSearchQuery()
+            .page(
+                new SearchQueryPage()
+                    .limit(CommandLineApp.MAX_PAGE_SIZE)
+                    .from(page * CommandLineApp.MAX_PAGE_SIZE));
+    return parent.buildProjectClient().searchProjects(query).getItems();
   }
 }

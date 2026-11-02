@@ -1,6 +1,5 @@
 package org.camunda.community.hub.cli;
 
-import java.util.UUID;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -11,13 +10,13 @@ public class DownloadFileCommand extends AbstractCommand {
 
   @CommandLine.Option(
       names = {"--file", "-f"},
-      description = "file UUID",
+      description = "file key",
       scope = CommandLine.ScopeType.LOCAL,
       required = true)
-  UUID fileUUID;
+  String fileKey;
 
   @Override
   protected Object createResponse() throws Exception {
-    return parent.buildFilesClient().getFile(fileUUID);
+    return parent.buildFileClient().getFile(fileKey);
   }
 }
