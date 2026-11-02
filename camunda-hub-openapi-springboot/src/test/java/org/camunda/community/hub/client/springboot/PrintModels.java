@@ -15,8 +15,7 @@ public class PrintModels {
   @PostConstruct
   public void print() throws ApiException {
     print(
-        "Projects",
-        camundaHubApi.projectApi().searchProjects(new ProjectSearchQuery()).getItems());
+        "Projects", camundaHubApi.projectApi().searchProjects(new ProjectSearchQuery()).getItems());
   }
 
   private void print(String name, List elements) {

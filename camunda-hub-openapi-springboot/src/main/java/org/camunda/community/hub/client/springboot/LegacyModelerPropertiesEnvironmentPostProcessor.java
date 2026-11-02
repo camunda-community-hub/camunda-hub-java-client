@@ -4,8 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
-import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -25,12 +25,7 @@ public class LegacyModelerPropertiesEnvironmentPostProcessor implements Environm
   static final String PROPERTY_SOURCE_NAME = "camundaHubLegacyModelerProperties";
 
   private static final List<String> PROPERTY_NAMES =
-      List.of(
-          "base-url",
-          "auth-url",
-          "audience",
-          "client-id",
-          "client-secret");
+      List.of("base-url", "auth-url", "audience", "client-id", "client-secret");
 
   private final Log log;
 
@@ -52,9 +47,7 @@ public class LegacyModelerPropertiesEnvironmentPostProcessor implements Environm
       }
     }
     if (!mapped.isEmpty()) {
-      environment
-          .getPropertySources()
-          .addLast(new MapPropertySource(PROPERTY_SOURCE_NAME, mapped));
+      environment.getPropertySources().addLast(new MapPropertySource(PROPERTY_SOURCE_NAME, mapped));
     }
   }
 }

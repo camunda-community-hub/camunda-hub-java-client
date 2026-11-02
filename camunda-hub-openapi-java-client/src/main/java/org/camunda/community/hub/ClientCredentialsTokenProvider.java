@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 /**
  * Fetches and caches access tokens using the OAuth 2.0 client credentials flow.
  *
- * <p>The {@code authUrl} is either the token endpoint itself (path ending in {@code /token}, as
- * for Camunda SaaS) or an OIDC issuer URL, in which case the token endpoint is looked up via
- * {@code /.well-known/openid-configuration}.
+ * <p>The {@code authUrl} is either the token endpoint itself (path ending in {@code /token}, as for
+ * Camunda SaaS) or an OIDC issuer URL, in which case the token endpoint is looked up via {@code
+ * /.well-known/openid-configuration}.
  */
 public class ClientCredentialsTokenProvider {
 

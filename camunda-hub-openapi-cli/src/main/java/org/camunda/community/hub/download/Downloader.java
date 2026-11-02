@@ -62,8 +62,7 @@ public class Downloader {
 
   private String getCanonicalPath(FileResult file) {
     String fileName =
-        String.format(
-            "%s[%s].%s", file.getName(), file.getFileKey(), toExtension(file.getType()));
+        String.format("%s[%s].%s", file.getName(), file.getFileKey(), toExtension(file.getType()));
     String folderPath = file.getCanonicalPath();
     return folderPath == null || folderPath.isEmpty() ? fileName : folderPath + "/" + fileName;
   }

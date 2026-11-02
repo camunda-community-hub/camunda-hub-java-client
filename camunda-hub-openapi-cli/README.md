@@ -49,7 +49,6 @@ Program will print out usage help for each subcommand.
 
 ```
 Usage: <main class> downloadProject [-hV] [--audience=<audience>]
-                                   
                                     [--authUrl=<authUrl>] [-b=<baseUrl>]
                                     [--clientId=<clientId>]
                                     [--clientSecret=<clientSecret>] [-m=<mode>]

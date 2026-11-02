@@ -28,7 +28,8 @@ public class CommandLineApp {
       names = {"--basePath", "-b", "--baseUrl"},
       description = "base url of API (default to Camunda Hub SaaS url)",
       scope = CommandLine.ScopeType.INHERIT,
-      defaultValue = "${CAMUNDA_HUB_CLIENT_BASEURL:-${CAMUNDA_MODELER_CLIENT_BASEURL:-https://hub.camunda.io/api/v2}}",
+      defaultValue =
+          "${CAMUNDA_HUB_CLIENT_BASEURL:-${CAMUNDA_MODELER_CLIENT_BASEURL:-https://hub.camunda.io/api/v2}}",
       required = true)
   String baseUrl;
 
@@ -45,7 +46,8 @@ public class CommandLineApp {
       names = {"--audience"},
       description = "audience of API (default to Camunda Saas audience)",
       scope = CommandLine.ScopeType.INHERIT,
-      defaultValue = "${CAMUNDA_HUB_CLIENT_AUDIENCE:-${CAMUNDA_MODELER_CLIENT_AUDIENCE:-api.cloud.camunda.io}}",
+      defaultValue =
+          "${CAMUNDA_HUB_CLIENT_AUDIENCE:-${CAMUNDA_MODELER_CLIENT_AUDIENCE:-api.cloud.camunda.io}}",
       required = true)
   String audience;
 
