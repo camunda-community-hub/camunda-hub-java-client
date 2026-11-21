@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 # install camunda hub cli to a nice location
 WORKDIR /opt
 RUN mkdir camunda-hub-cli
